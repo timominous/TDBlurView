@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name    = 'TDBlurView'
-  s.version = '0.0.1'
+  s.version = '0.0.2'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.summary = 'Blurs views'
   s.homepage = 'http://github.com/timominous/TDBlurView'
