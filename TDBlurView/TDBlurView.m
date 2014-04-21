@@ -38,6 +38,7 @@
 - (void)setBlurredView:(UIView *)blurredView {
   _blurredView = blurredView;
   self.excludedViews = @[];
+  _size = blurredView.bounds.size;
   
   if (!_blurOverlay) {
     self.blurOverlay = [[UIView alloc] init];
@@ -57,6 +58,18 @@
 - (void)setExcludedViews:(NSArray *)excludedViews {
   _excludedViews = excludedViews;
   [_excludedProps removeAllObjects];
+}
+
+- (void)setSize:(CGSize)size {
+  _size = size;
+  
+  CGRect rect = _blurOverlay.frame;
+  rect.size = size;
+  _blurOverlay.frame = rect;
+  
+  rect = _blurImageView.frame;
+  rect.size = size;
+  _blurImageView.frame = rect;
 }
 
 - (void)blur {

@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) UIView *blurredView;
 @property (strong, nonatomic) NSArray *excludedViews;
+@property (nonatomic) CGSize size;
 
 - (id)initWithBlurredView:(UIView *)blurredView;
 
