@@ -75,8 +75,13 @@
 - (void)blur {
   if (_blurred)
     return;
-  
-  NSLog(@"blur");
+
+  self.excludedProps = [NSMutableArray array];
+  for (UIView *v in _excludedViews) {
+    [_excludedProps addObject:@{@"frame": [NSValue valueWithCGRect:v.frame],
+                                @"superview": v.superview}];
+    [v removeFromSuperview];
+  }
   
   UIImage *viewImage = [self generateImageForView:_blurredView];
   
@@ -97,14 +102,13 @@
   
   [_blurredView addSubview:_blurOverlay];
   
-  self.excludedProps = [NSMutableArray array];
-  for (UIView *v in _excludedViews) {
-    [_excludedProps addObject:@{@"frame": [NSValue valueWithCGRect:v.frame],
-                                @"superview": v.superview}];
-    CGRect frame = [v.superview convertRect:v.frame toView:_blurredView];
-    v.frame = frame;
+  [_excludedViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    UIView *superview = _excludedProps[idx][@"superview"];
+    CGRect frame = [_excludedProps[idx][@"frame"] CGRectValue];
+    UIView *v = (UIView *)obj;
+    v.frame = [superview convertRect:frame toView:_blurredView];
     [_blurOverlay addSubview:v];
-  }
+  }];
   
   [UIView animateWithDuration:0.3 animations:^{
     _blurOverlay.alpha = 1.f;
